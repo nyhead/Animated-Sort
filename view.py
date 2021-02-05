@@ -3,12 +3,13 @@ import model
 import random
 from pygame.locals import *
 
+
 class View:
     def __init__(self, model):
         self.model = model
         self.isinitialized = False
         self.screen = None
-        self.clock =  None
+        self.clock = None
         self.font = None
         self.width, self.height = None, None
 
@@ -20,11 +21,12 @@ class View:
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Sans-Serif", 50)
-        self.BLACK, self.WHITE, self.RED, self.BLUE, self.GREEN = (0,0,0), (255,255,255), (255,0,0), (0,0,255), (0,128,0)
+        self.BLACK, self.WHITE, self.RED, self.BLUE, self.GREEN = (0, 0, 0), (255, 255, 255), (255, 0, 0), (
+        0, 0, 255), (0, 128, 0)
 
         center = (100, self.height / 2)
         for i in range(len(self.model.a)):
-            self.model.arr_elem.append(Element(center[0]+i*70, center[1]))
+            self.model.arr_elem.append(Element(center[0] + i * 70, center[1]))
         # print(self.model.arr_elem)
 
         self.isinitialized = True
@@ -37,8 +39,8 @@ class View:
             self.screen.fill(self.WHITE)
 
             bubble_sort = self.font.render('Bubble Sort', 1, self.BLACK)
-            selection_sort = self.font.render('Selection Sort', 1, self.BLACK)
-            insertion_sort = self.font.render('Insertion Sort', 1, self.BLACK)
+            selection_sort = self.font.render('Selection Sort(not implemented)', 1, self.BLACK)
+            insertion_sort = self.font.render('Insertion Sort(not implemented)', 1, self.BLACK)
             mx, my = pygame.mouse.get_pos()
 
             button_bubble = pygame.rect.Rect(self.width // 2 - 150, self.height // 2 - 50, 250, 50)
@@ -67,7 +69,7 @@ class View:
 
     def show_array(self):
         a = self.model.a
-        center = (100, self.height/2)
+        center = (100, self.height / 2)
         arr_elem = self.model.arr_elem
         # print(arr_elem)
 
@@ -77,7 +79,6 @@ class View:
             border_color = arr_elem[i].border_color
 
             text = self.font.render(str(a[i]), 1, self.BLACK)
-            text_rect = text.get_rect()
 
             # print(a[i])
             box = pygame.rect.Rect((border, border, 50, 50))
@@ -89,32 +90,16 @@ class View:
         self.clear_arr()
         pygame.display.update()
 
-
     def clear_arr(self):
         arr_elem = self.model.arr_elem
-        arr_elem.clear()
+        # arr_elem.clear()
         center = (100, self.height / 2)
         for i in range(len(self.model.a)):
-            self.model.arr_elem.append(Element(center[0]+i*70, center[1]))
+            # self.model.arr_elem.append(Element(center[0]+i*70, center[1]))
+            arr_elem[i].surf.fill(self.WHITE)
+            arr_elem[i].x, arr_elem[i].y = center[0] + i * 70, center[1]
 
     def slide_two_elements(self, elem1, elem2):
-        # a and b are of type Element
-        # a.border_color = b.border_color = self.RED
-        #
-        #
-        # while a.x != init_b_x and b.x != init_a_x:
-        #     self.clear_arr()
-        #
-        #     a.x += right
-        #     b.x += left
-        #     self.screen.blit(a.surf, (a.x, a.y))
-        #     self.screen.blit(b.surf, (b.x, b.y))
-        #
-        #     pygame.display.update()
-        #     pygame.time.wait(1000)
-        #
-        # a.border_color = b.border_color = self.WHITE
-
         left = -0.05
         right = 0.05
 
@@ -122,17 +107,17 @@ class View:
         init_elem2_x = elem2.x
 
         a = self.model.a
-        center = (100, self.height/2)
+        center = (100, self.height / 2)
         arr_elem = self.model.arr_elem
         # print(arr_elem)
         for i in range(len(a)):
-            if arr_elem[i] is elem1 and arr_elem[i+1] is elem2:
+            if arr_elem[i] is elem1 and arr_elem[i + 1] is elem2:
                 elem1.surf.fill(self.WHITE)
                 elem2.surf.fill(self.WHITE)
 
                 elem1.border_color = elem2.border_color = self.RED
 
-                text1 = self.font.render(str(a[i+1]), 1, self.BLACK)
+                text1 = self.font.render(str(a[i + 1]), 1, self.BLACK)
                 text2 = self.font.render(str(a[i]), 1, self.BLACK)
 
                 while elem1.x < init_elem2_x and elem2.x > init_elem1_x:
@@ -144,8 +129,8 @@ class View:
                     pygame.draw.rect(elem1.surf, elem1.border_color, (elem1.border, elem1.border, 50, 50), 1)
                     pygame.draw.rect(elem2.surf, elem2.border_color, (elem2.border, elem2.border, 50, 50), 1)
 
-                    elem1.surf.blit(text1, (20,15))
-                    elem2.surf.blit(text2, (20,15))
+                    elem1.surf.blit(text1, (20, 15))
+                    elem2.surf.blit(text2, (20, 15))
 
                     self.screen.blit(elem1.surf, (elem1.x, elem1.y))
                     self.screen.blit(elem2.surf, (elem2.x, elem2.y))
@@ -160,7 +145,6 @@ class View:
                 border_color = arr_elem[i].border_color
 
                 text = self.font.render(str(a[i]), 1, self.BLACK)
-                text_rect = text.get_rect()
 
                 # print(a[i])
                 box = pygame.rect.Rect((border, border, 50, 50))
@@ -172,6 +156,7 @@ class View:
         self.clear_arr()
         pygame.display.update()
 
+
 class Element:
     def __init__(self, x, y):
         self.x = x
@@ -179,10 +164,10 @@ class Element:
 
         self.border = 5
 
-        self.surf = pygame.Surface((70,70), pygame.SRCALPHA)
-        self.surf.fill((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
-        self.surf.fill((255,255,255))
-        self.border_color = ((255,255,255))
+        self.surf = pygame.Surface((70, 70), pygame.SRCALPHA)
+        self.surf.fill((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        self.surf.fill((255, 255, 255))
+        self.border_color = ((255, 255, 255))
 
     def __repr__(self):
         return f'({self.x}, {self.y})'

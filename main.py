@@ -18,26 +18,32 @@ while running:
         if event.type == QUIT:
             running = False
         if event.type == KEYDOWN:
-            game_model.FPS = 0
+            # game_model.FPS = 0
             # print('show array')
+            pass
     if choice != None:
         # graphics.screen.fill(graphics.WHITE)
         # graphics.show_array()
         # [graphics.clock.tick(i) for i in range(3)]
+        graphics.show_array()
+        pygame.time.wait(1000)
         if choice == "BUBBLE":
             # print("Bubble")
             # graphics.screen.fill(graphics.BLACK)
-            bubble_sort(game_model.a, graphics, game_model)
-            choice = ''
+            bubble_sort(graphics, game_model)
+
+            # choice = ''
             # print(game_model.a)
         elif choice == "SELECTION":
             # graphics.screen.fill(graphics.BLACK)
             # print("Selection")
-            selection_sort(game_model.a)
+            selection_sort(graphics, game_model)
+
         elif choice == "INSERTION":
             # graphics.screen.fill(graphics.BLACK)
             # print("Insertion")
-            insertion_sort(game_model.a)
+            insertion_sort(graphics, game_model)
+        choice = ''
     else:
         choice = graphics.intro()
 
