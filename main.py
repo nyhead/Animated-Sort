@@ -11,7 +11,8 @@ graphics = view.View(game_model)
 
 graphics.initialize()
 
-choice = graphics.intro()
+# choice = graphics.intro()
+choice = "INSERTION"
 while running:
     graphics.screen.fill(graphics.WHITE)
     for event in pygame.event.get():
@@ -25,23 +26,14 @@ while running:
         # graphics.screen.fill(graphics.WHITE)
         # graphics.show_array()
         # [graphics.clock.tick(i) for i in range(3)]
+        print(choice)
         graphics.show_array()
         pygame.time.wait(1000)
         if choice == "BUBBLE":
-            # print("Bubble")
-            # graphics.screen.fill(graphics.BLACK)
             bubble_sort(graphics, game_model)
-
-            # choice = ''
-            # print(game_model.a)
         elif choice == "SELECTION":
-            # graphics.screen.fill(graphics.BLACK)
-            # print("Selection")
             selection_sort(graphics, game_model)
-
         elif choice == "INSERTION":
-            # graphics.screen.fill(graphics.BLACK)
-            # print("Insertion")
             insertion_sort(graphics, game_model)
         choice = ''
     else:

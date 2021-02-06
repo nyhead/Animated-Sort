@@ -1,6 +1,6 @@
 import view
 import pygame
-
+import copy
 
 def bubble_sort(graphics, model):
     a = model.a
@@ -44,3 +44,30 @@ def selection_sort(graphics, model):
 
 def insertion_sort(graphics, model):
     a = model.a
+    arr_elem = model.arr_elem
+    n = len(a)
+    ignore_list = []
+    for i in range(n):
+        t = a[i]
+        j = i - 1
+        if t < a[j]:
+            graphics.slide_up(i)
+            # graphics.clear_arr()
+            # graphics.show_array()
+            pygame.time.wait(1000)
+        init_y = arr_elem[i].y
+        graphics.clear_arr()
+        while j >= 0 and a[j] > t:
+            a[j + 1] = a[j]
+
+            graphics.slide_right(arr_elem[j].x, arr_elem[j+1].x)
+            pygame.time.wait(1000)
+            graphics.clear_arr()
+            # graphics.show_array()
+            j -= 1
+        arr_elem[i].y = init_y
+        a[j + 1] = t
+        if t < a[i]:
+            graphics.slide_in(t, arr_elem[i].x, arr_elem[i].y, arr_elem[j+1].x, arr_elem[j+1].y)
+            pygame.time.wait(1000)
+            # graphics.show_array()

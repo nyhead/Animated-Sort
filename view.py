@@ -67,7 +67,7 @@ class View:
                         return "INSERTION"
                 return None
 
-    def show_array(self):
+    def show_array(self, ignore_list = [], KEEP_COORDS = False):
         a = self.model.a
         center = (100, self.height / 2)
         arr_elem = self.model.arr_elem
@@ -79,7 +79,7 @@ class View:
             border_color = arr_elem[i].border_color
 
             text = self.font.render(str(a[i]), 1, self.BLACK)
-
+            # if arr_elem[i] not in ignore_list:
             # print(a[i])
             box = pygame.rect.Rect((border, border, 50, 50))
             pygame.draw.rect(surf, border_color, box, 1)
@@ -90,14 +90,16 @@ class View:
         self.clear_arr()
         pygame.display.update()
 
-    def clear_arr(self):
+    def clear_arr(self, KEEP_COORDS = False):
         arr_elem = self.model.arr_elem
         # arr_elem.clear()
         center = (100, self.height / 2)
         for i in range(len(self.model.a)):
             # self.model.arr_elem.append(Element(center[0]+i*70, center[1]))
+            # if arr_elem[i] not in ignore_list:
             arr_elem[i].surf.fill(self.WHITE)
-            arr_elem[i].x, arr_elem[i].y = center[0] + i * 70, center[1]
+            if not KEEP_COORDS:
+                arr_elem[i].x, arr_elem[i].y = center[0] + i * 70, center[1]
 
     def slide_two_elements(self, elem1, elem2):
         left = -0.05
@@ -138,8 +140,88 @@ class View:
                     pygame.display.update()
                     # pygame.time.wait(1000)
                 elem1.border_color = elem2.border_color = self.WHITE
-            else:
+            # else:
+            #
+            #     surf = arr_elem[i].surf
+            #     border = arr_elem[i].border
+            #     border_color = arr_elem[i].border_color
+            #
+            #     text = self.font.render(str(a[i]), 1, self.BLACK)
+            #
+            #     # print(a[i])
+            #     box = pygame.rect.Rect((border, border, 50, 50))
+            #     pygame.draw.rect(surf, border_color, box, 1)
+            #
+            #     surf.blit(text, (20, 15))
+            #     self.screen.blit(surf, (arr_elem[i].x, arr_elem[i].y))
 
+        self.clear_arr()
+        pygame.display.update()
+
+    def insertion_sort_anim(self, source_index, destination_index):
+        if destination_index < 0:
+            return
+        a = self.model.a
+        center = (100, self.height / 2)
+        arr_elem = self.model.arr_elem
+        # print(arr_elem)
+        elem = arr_elem[source_index]
+
+        left = -0.5
+        right = 0.5
+        down = 0.5
+        up = -0.5
+
+        init_elem = (elem.x, elem.y)
+        for i in range(len(a)):
+            if i == source_index:
+                elem.surf.fill(self.WHITE)
+
+                elem.border_color = self.RED
+
+                text = self.font.render(str(a[i]), 1, self.BLACK)
+
+                #going up
+                limit_up = elem.y - 100
+                while elem.y > limit_up:
+                    elem.y += up
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (elem.x, elem.y))
+
+                    pygame.display.update()
+                # pygame.time.wait(1000)
+                for j in range(source_index-1, destination_index+1, -1):
+                    current = arr_elem[destination_index]
+                    text = self.font.render(str(a[j]), 1, self.BLACK)
+                    while current.x < init_elem[0]:
+                        current.x += right
+
+                        pygame.draw.rect(current.surf, current.border_color, (current.border, current.border, 50, 50), 1)
+
+                        current.surf.blit(text, (20, 15))
+
+                        self.screen.blit(current.surf, (current.x, current.y))
+
+                        pygame.display.update()
+                    init_elem = (current.x, current.y)
+
+                dest_coord = (arr_elem[destination_index].x, arr_elem[destination_index].y)
+                while elem.x < dest_coord[0] and elem.y < dest_coord[1]:
+                    elem.x += left
+                    elem.y += up
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (elem.x, elem.y))
+
+                    pygame.display.update()
+            else:
                 surf = arr_elem[i].surf
                 border = arr_elem[i].border
                 border_color = arr_elem[i].border_color
@@ -155,7 +237,120 @@ class View:
 
         self.clear_arr()
         pygame.display.update()
+    def slide_up(self, source_index):
+        # if source_index-1<0:
+        #     return
+        arr_elem = self.model.arr_elem
+        a = self.model.a
+        elem = arr_elem[source_index]
 
+        up = -0.5
+
+        for i in range(len(a)):
+            if i == source_index:
+                elem.surf.fill(self.WHITE)
+
+                elem.border_color = self.RED
+
+                text = self.font.render(str(a[i]), 1, self.BLACK)
+
+                #going up
+                limit_up = elem.y - 100
+                while elem.y > limit_up:
+                    elem.y += up
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (elem.x, elem.y))
+
+                    pygame.display.update()
+                # elem.border_color = self.WHITE
+
+    def slide_right(self, source_x, dest_x):
+        arr_elem = self.model.arr_elem
+        a = self.model.a
+
+        right = 0.5
+
+        for i in range(len(a)):
+            if arr_elem[i].x == source_x:
+                elem = arr_elem[i]
+                elem.surf.fill(self.WHITE)
+
+                text = self.font.render(str(a[i]), 1, self.BLACK)
+
+                #going up
+                while elem.x < dest_x:
+                    elem.x += right
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (elem.x, elem.y))
+
+                    pygame.display.update()
+            else:
+                surf = arr_elem[i].surf
+                border = arr_elem[i].border
+                border_color = arr_elem[i].border_color
+
+                text = self.font.render(str(a[i]), 1, self.BLACK)
+                # if arr_elem[i] not in ignore_list:
+                # print(a[i])
+                box = pygame.rect.Rect((border, border, 50, 50))
+                pygame.draw.rect(surf, border_color, box, 1)
+
+                surf.blit(text, (20, 15))
+                self.screen.blit(surf, (arr_elem[i].x, arr_elem[i].y))
+                # elem.border_color = self.WHITE
+        # self.clear_arr()
+        # pygame.display.update()
+    def slide_in(self, temp_val, source_x, source_y, dest_x, dest_y):
+        arr_elem = self.model.arr_elem
+        a = self.model.a
+
+        left = -0.5
+        down = 0.5
+
+        for i in range(len(a)):
+            if arr_elem[i].x == source_x:
+                elem = arr_elem[i]
+                elem.surf.fill(self.WHITE)
+
+                text = self.font.render(str(temp_val), 1, self.BLACK)
+
+                #going up
+                while source_x > dest_x:
+                    source_x += left
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (source_x, source_y))
+
+                    pygame.display.update()
+                pygame.time.wait(1000)
+                elem.surf.fill(self.WHITE)
+
+                text = self.font.render(str(temp_val), 1, self.BLACK)
+
+                #going up
+                while source_y < dest_y:
+                    source_y += down
+
+                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+
+                    elem.surf.blit(text, (20, 15))
+
+                    self.screen.blit(elem.surf, (source_x, source_y))
+
+                    pygame.display.update()
+                # elem.border_color = self.WHITE
+        # self.clear_arr()
 
 class Element:
     def __init__(self, x, y):
