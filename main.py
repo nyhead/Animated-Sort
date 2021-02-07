@@ -11,21 +11,14 @@ graphics = view.View(game_model)
 
 graphics.initialize()
 
-# choice = graphics.intro()
-choice = "INSERTION"
+choice = graphics.intro()
 while running:
     graphics.screen.fill(graphics.WHITE)
     for event in pygame.event.get():
         if event.type == QUIT:
             running = False
-        if event.type == KEYDOWN:
-            # game_model.FPS = 0
-            # print('show array')
-            pass
+
     if choice != None:
-        # graphics.screen.fill(graphics.WHITE)
-        # graphics.show_array()
-        # [graphics.clock.tick(i) for i in range(3)]
         print(choice)
         graphics.show_array()
         pygame.time.wait(1000)
