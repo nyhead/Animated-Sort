@@ -4,7 +4,7 @@ def bubble_sort(graphics, model):
     a = model.a
     n = len(a)
     arr_elem = model.arr_elem
-    for i in range(n - 1, 0, -1):
+    for i in range(n - 1, -1, -1):
         for j in range(i):
             if a[j] > a[j + 1]:
                 a[j], a[j + 1] = a[j + 1], a[j]
@@ -12,12 +12,15 @@ def bubble_sort(graphics, model):
             graphics.show_array()
             pygame.time.wait(1000)
         arr_elem[i].border_color = graphics.BLACK
+    graphics.show_array()
+    pygame.time.wait(1000)
+    print('End')
 
 def selection_sort(graphics, model):
     a = model.a
     arr_elem = model.arr_elem
     n = len(a)
-    for i in range(n - 1):
+    for i in range(n):
         min_index = i
         min_val = a[i]
         for j in range(i + 1, n):
@@ -37,6 +40,8 @@ def selection_sort(graphics, model):
         arr_elem[i].border_color = graphics.GREEN
         graphics.show_array()
         pygame.time.wait(1000)
+    graphics.show_array()
+    pygame.time.wait(1000)
 
 
 def insertion_sort(graphics, model):
