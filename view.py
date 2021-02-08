@@ -1,5 +1,4 @@
 import pygame
-import model
 import random
 from pygame.locals import *
 
@@ -38,8 +37,8 @@ class View:
             self.screen.fill(self.WHITE)
 
             bubble_sort = self.font.render('Bubble Sort', 1, self.BLACK)
-            selection_sort = self.font.render('Selection Sort(not implemented)', 1, self.BLACK)
-            insertion_sort = self.font.render('Insertion Sort(not implemented)', 1, self.BLACK)
+            selection_sort = self.font.render('Selection Sort', 1, self.BLACK)
+            insertion_sort = self.font.render('Insertion Sort', 1, self.BLACK)
             mx, my = pygame.mouse.get_pos()
 
             button_bubble = pygame.rect.Rect(self.width // 2 - 150, self.height // 2 - 50, 250, 50)
@@ -50,17 +49,18 @@ class View:
             self.screen.blit(selection_sort, button_selection)
             self.screen.blit(insertion_sort, button_insertion)
 
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    running = False
-                if event.type == MOUSEBUTTONDOWN:
-                    if button_bubble.collidepoint((mx, my)):
-                        return "BUBBLE"
-                    if button_selection.collidepoint((mx, my)):
-                        return "SELECTION"
-                    if button_insertion.collidepoint((mx, my)):
-                        return "INSERTION"
-                return None
+            pygame.display.update()
+
+            event = pygame.event.wait()
+            if event.type == QUIT:
+                running = False
+            if event.type == MOUSEBUTTONDOWN:
+                if button_bubble.collidepoint((mx, my)):
+                    return "BUBBLE"
+                if button_selection.collidepoint((mx, my)):
+                    return "SELECTION"
+                if button_insertion.collidepoint((mx, my)):
+                    return "INSERTION"
 
     def show_array(self):
         a = self.model.a
@@ -174,7 +174,6 @@ class View:
 
                 text = self.font.render(str(a[i]), 1, self.BLACK)
 
-                #going up
                 while elem.x < dest_x:
                     elem.x += right
 
@@ -235,7 +234,7 @@ class Element:
         self.border = 5
 
         self.surf = pygame.Surface((70, 70), pygame.SRCALPHA)
-        self.surf.fill((random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+
         self.surf.fill((255, 255, 255))
         self.border_color = ((255, 255, 255))
 
