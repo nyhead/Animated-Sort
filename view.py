@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import random
 from pygame.locals import *
@@ -53,7 +55,8 @@ class View:
 
             event = pygame.event.wait()
             if event.type == QUIT:
-                running = False
+                pygame.quit()
+                sys.exit()
             if event.type == MOUSEBUTTONDOWN:
                 if button_bubble.collidepoint((mx, my)):
                     return "BUBBLE"
@@ -61,6 +64,18 @@ class View:
                     return "SELECTION"
                 if button_insertion.collidepoint((mx, my)):
                     return "INSERTION"
+
+    def initiate_event_loop(self):
+        pygame.time.set_timer(USEREVENT, 1000)
+        while True:
+            event = pygame.event.wait()
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == USEREVENT:
+                break
+
+
 
     def show_array(self):
         a = self.model.a
