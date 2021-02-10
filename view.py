@@ -171,8 +171,6 @@ class View:
 
         for i in range(len(a)):
             if i == source_index:
-                elem.surf.fill(self.WHITE)
-
                 elem.border_color = self.RED
 
                 text = self.font.render(str(a[i]), 1, self.BLACK)
@@ -181,13 +179,16 @@ class View:
                 while elem.y > limit_up:
                     elem.y += up
 
-                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
 
-                    elem.surf.blit(text, (20, 15))
+                    text_rec = text.get_rect(center=box.center)
 
-                    self.screen.blit(elem.surf, (elem.x, elem.y))
+                    self.screen.blit(text, text_rec)
 
                     pygame.display.update()
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
                 elem.border_color = self.WHITE
 
     def slide_right(self, source_x, dest_x):
@@ -199,20 +200,22 @@ class View:
         for i in range(len(a)):
             if arr_elem[i].x == source_x:
                 elem = arr_elem[i]
-                elem.surf.fill(self.WHITE)
 
                 text = self.font.render(str(a[i]), 1, self.BLACK)
 
                 while elem.x < dest_x:
                     elem.x += right
 
-                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
 
-                    elem.surf.blit(text, (20, 15))
+                    text_rec = text.get_rect(center=box.center)
 
-                    self.screen.blit(elem.surf, (elem.x, elem.y))
+                    self.screen.blit(text, text_rec)
 
                     pygame.display.update()
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
 
     def slide_in(self, temp_val, source_x, source_y, dest_x, dest_y):
         arr_elem = self.arr_elem
@@ -224,35 +227,40 @@ class View:
         for i in range(len(a)):
             elem = arr_elem[i]
             if elem.x == source_x:
-                elem.surf.fill(self.WHITE)
                 elem.border_color = self.RED
-                text = self.font.render(str(temp_val), 1, self.BLACK)
+                text = self.font.render(str(a[i]), 1, self.BLACK)
 
-                while source_x > dest_x:
-                    source_x += left
+                while elem.x > dest_x:
+                    elem.x += left
 
-                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
 
-                    elem.surf.blit(text, (20, 15))
+                    text_rec = text.get_rect(center=box.center)
 
-                    self.screen.blit(elem.surf, (source_x, source_y))
+                    self.screen.blit(text, text_rec)
 
                     pygame.display.update()
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
                 pygame.time.wait(1000)
-                elem.surf.fill(self.WHITE)
+                # elem.surf.fill(self.WHITE)
 
                 text = self.font.render(str(temp_val), 1, self.BLACK)
 
-                while source_y < dest_y:
-                    source_y += down
+                while elem.y < dest_y:
+                    elem.y += down
 
-                    pygame.draw.rect(elem.surf, elem.border_color, (elem.border, elem.border, 50, 50), 1)
+                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
 
-                    elem.surf.blit(text, (20, 15))
+                    text_rec = text.get_rect(center=box.center)
 
-                    self.screen.blit(elem.surf, (source_x, source_y))
+                    self.screen.blit(text, text_rec)
 
                     pygame.display.update()
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
             elem.border_color = self.WHITE
 
 
