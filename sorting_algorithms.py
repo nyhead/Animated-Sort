@@ -4,23 +4,23 @@ from pygame.locals import *
 def bubble_sort(graphics, model):
     a = model.a
     n = len(a)
-    arr_elem = model.arr_elem
+    arr_elem = graphics.arr_elem
     for i in range(n - 1, -1, -1):
         for j in range(i):
             if a[j] > a[j + 1]:
                 a[j], a[j + 1] = a[j + 1], a[j]
-                graphics.slide_two_elements(arr_elem[j], arr_elem[j + 1])
+                arr_elem[j], arr_elem[j + 1] = arr_elem[j + 1], arr_elem[j]
+                graphics.slide_two_elements(arr_elem[j+1], arr_elem[j])
             graphics.show_array()
 
             graphics.initiate_event_loop()
         arr_elem[i].border_color = graphics.BLACK
     graphics.show_array()
     graphics.initiate_event_loop()
-    print('End')
 
 def selection_sort(graphics, model):
     a = model.a
-    arr_elem = model.arr_elem
+    arr_elem = graphics.arr_elem
     n = len(a)
     for i in range(n):
         min_index = i
@@ -48,7 +48,7 @@ def selection_sort(graphics, model):
 
 def insertion_sort(graphics, model):
     a = model.a
-    arr_elem = model.arr_elem
+    arr_elem = graphics.arr_elem
     n = len(a)
 
     for i in range(n):
