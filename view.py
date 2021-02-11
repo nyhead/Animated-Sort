@@ -104,7 +104,7 @@ class View:
         # arr_elem.clear()
         center = (100, self.height / 2)
         for i in range(len(self.model.a)):
-            arr_elem[i].surf.fill(self.WHITE)
+            # arr_elem[i].surf.fill(self.WHITE)
             arr_elem[i].x, arr_elem[i].y = center[0] + i * 70, center[1]
 
     def slide_two_elements(self, elem1, elem2):
@@ -118,32 +118,34 @@ class View:
         center = (100, self.height / 2)
         arr_elem = self.arr_elem
 
-        for i in range(len(a)):
+        for i in range(len(a)-1):
+            if arr_elem[i] is elem1:
+                elem1.border_color = elem2.border_color = self.RED
 
-            elem1.border_color = elem2.border_color = self.RED
+                text1 = self.font.render(str(a[i]), 1, self.BLACK)
+                text2 = self.font.render(str(a[i+1]), 1, self.BLACK)
 
-            text1 = self.font.render(str(a[i + 1]), 1, self.BLACK)
-            text2 = self.font.render(str(a[i]), 1, self.BLACK)
+                while elem1.x < init_elem2_x and elem2.x > init_elem1_x:
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
 
-            while elem1.x < init_elem2_x and elem2.x > init_elem1_x:
-                elem1.x += right
-                elem2.x += left
+                    elem1.x += right
+                    elem2.x += left
 
-                box1 = pygame.rect.Rect((elem1.x, elem1.y, 50, 50))
-                text_rect1 = text1.get_rect(center=box1.center)
-                box2 = pygame.rect.Rect((elem2.x, elem2.y, 50, 50))
-                text_rect2 = text2.get_rect(center=box2.center)
+                    box1 = pygame.rect.Rect((elem1.x, elem1.y, 50, 50))
+                    text_rect1 = text1.get_rect(center=box1.center)
+                    box2 = pygame.rect.Rect((elem2.x, elem2.y, 50, 50))
+                    text_rect2 = text2.get_rect(center=box2.center)
 
 
-                pygame.draw.rect(self.screen, elem1.border_color, box1, 1)
-                pygame.draw.rect(self.screen, elem2.border_color, box2, 1)
+                    pygame.draw.rect(self.screen, elem1.border_color, box1, 1)
+                    pygame.draw.rect(self.screen, elem2.border_color, box2, 1)
 
-                self.screen.blit(text1, text_rect1)
-                self.screen.blit(text2, text_rect2)
+                    self.screen.blit(text1, text_rect1)
+                    self.screen.blit(text2, text_rect2)
 
-                self.screen.fill(self.WHITE)
-                self.show_array()
-                pygame.display.update()
+                    # pygame.display.update()
+                    # self.show_array()
                 elem1.border_color = elem2.border_color = self.WHITE
             # else:
             #     border = arr_elem[i].border
@@ -157,6 +159,7 @@ class View:
             #
             #     self.screen.blit(text, text_rec)
             #     pygame.display.update()
+            #     self.screen.fill(self.WHITE)
 
         # self.clear_arr()
         pygame.display.update()
@@ -177,6 +180,9 @@ class View:
 
                 limit_up = elem.y - 100
                 while elem.y > limit_up:
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
+
                     elem.y += up
 
                     box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
@@ -186,36 +192,61 @@ class View:
 
                     self.screen.blit(text, text_rec)
 
-                    pygame.display.update()
-                    self.screen.fill(self.WHITE)
-                    self.show_array()
+                    # pygame.display.update()
+
                 elem.border_color = self.WHITE
 
-    def slide_right(self, source_x, dest_x):
+    def slide_right(self, j, t):
         arr_elem = self.arr_elem
         a = self.model.a
 
-        right = 0.5
+        right = 1
 
-        for i in range(len(a)):
-            if arr_elem[i].x == source_x:
-                elem = arr_elem[i]
+        prev_x = prev_y = None
+        elem = arr_elem[j]
+        dest = arr_elem[j+1].x
+        while j >= 0 and a[j] > t:
+            prev_x = elem.x
+            prev_y = elem.y
+            text = self.font.render(str(a[j]), 1, self.BLACK)
 
-                text = self.font.render(str(a[i]), 1, self.BLACK)
+            while elem.x < dest:
+                self.screen.fill(self.WHITE)
+                self.show_array()
 
-                while elem.x < dest_x:
-                    elem.x += right
+                elem.x += right
 
-                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
-                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
+                box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                pygame.draw.rect(self.screen, elem.border_color, box, 1)
 
-                    text_rec = text.get_rect(center=box.center)
+                text_rec = text.get_rect(center=box.center)
 
-                    self.screen.blit(text, text_rec)
+                self.screen.blit(text, text_rec)
+            pygame.time.wait(1000)
+            j -= 1
+            elem = arr_elem[j]
+            dest = prev_x
+        return prev_x, prev_y
 
-                    pygame.display.update()
-                    self.screen.fill(self.WHITE)
-                    self.show_array()
+        # for i in range(len(a)):
+        #     if arr_elem[i].x == source_x:
+        #         elem = arr_elem[i]
+        #
+        #         text = self.font.render(str(a[i]), 1, self.BLACK)
+        #
+        #         while elem.x < dest_x:
+        #             self.screen.fill(self.WHITE)
+        #             self.show_array()
+        #
+        #             elem.x += right
+        #
+        #             box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+        #             pygame.draw.rect(self.screen, elem.border_color, box, 1)
+        #
+        #             text_rec = text.get_rect(center=box.center)
+        #
+        #             self.screen.blit(text, text_rec)
+
 
     def slide_in(self, temp_val, source_x, source_y, dest_x, dest_y):
         arr_elem = self.arr_elem
@@ -226,7 +257,7 @@ class View:
 
         for i in range(len(a)):
             elem = arr_elem[i]
-            if elem.x == source_x:
+            if elem.x == source_x and elem.y == source_y:
                 elem.border_color = self.RED
                 text = self.font.render(str(a[i]), 1, self.BLACK)
 

@@ -33,7 +33,7 @@ while running:
 
     # choice = ''
     graphics.screen.fill(graphics.WHITE)
-    graphics.clear_arr()
+    # graphics.clear_arr()
     game_model.generate_unsorted_array()
     pygame.display.update()
     graphics.clock.tick(game_model.FPS)
