@@ -99,12 +99,13 @@ class View:
 
         # self.clear_arr()
 
-    def clear_arr(self):
+    def clear_arr(self, CLEAR_COLOR = False):
         arr_elem = self.arr_elem
         # arr_elem.clear()
         center = (100, self.height / 2)
         for i in range(len(self.model.a)):
             # arr_elem[i].surf.fill(self.WHITE)
+            if CLEAR_COLOR: arr_elem[i].border_color = self.WHITE
             arr_elem[i].x, arr_elem[i].y = center[0] + i * 70, center[1]
 
     def slide_two_elements(self, elem1, elem2):
@@ -200,7 +201,7 @@ class View:
         arr_elem = self.arr_elem
         a = self.model.a
 
-        right = 1
+        right = 0.5
 
         prev_x = prev_y = None
         elem = arr_elem[j]
@@ -222,7 +223,7 @@ class View:
                 text_rec = text.get_rect(center=box.center)
 
                 self.screen.blit(text, text_rec)
-            pygame.time.wait(1000)
+            self.initiate_event_loop()
             j -= 1
             elem = arr_elem[j]
             dest = prev_x
@@ -274,8 +275,8 @@ class View:
                     pygame.display.update()
                     self.screen.fill(self.WHITE)
                     self.show_array()
-                pygame.time.wait(1000)
-                # elem.surf.fill(self.WHITE)
+
+                self.initiate_event_loop()
 
                 text = self.font.render(str(temp_val), 1, self.BLACK)
 
@@ -292,6 +293,7 @@ class View:
                     pygame.display.update()
                     self.screen.fill(self.WHITE)
                     self.show_array()
+                self.initiate_event_loop()
             elem.border_color = self.WHITE
 
 

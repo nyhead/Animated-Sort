@@ -10,13 +10,11 @@ def bubble_sort(graphics, model):
             if a[j] > a[j + 1]:
                 graphics.slide_two_elements(arr_elem[j], arr_elem[j+1])
                 a[j], a[j + 1] = a[j + 1], a[j]
-                # arr_elem[j], arr_elem[j + 1] = arr_elem[j + 1], arr_elem[j]
-            # graphics.show_array()
+                graphics.initiate_event_loop()
+
             graphics.clear_arr()
-            graphics.initiate_event_loop()
         arr_elem[i].border_color = graphics.BLACK
-    # graphics.screen.fill(graphics.WHITE)
-    # graphics.show_array()
+    graphics.show_array()
     graphics.initiate_event_loop()
 
 def selection_sort(graphics, model):
@@ -58,28 +56,19 @@ def insertion_sort(graphics, model):
         graphics.initiate_event_loop()
         t = a[i]
         j = i - 1
-        init = (arr_elem[j].x, arr_elem[j].y)
+
         if t < a[j]:
             graphics.slide_up(i)
+
+            graphics.initiate_event_loop()
+
             returned = graphics.slide_right(j, t)
             graphics.slide_in(t, arr_elem[i].x, arr_elem[i].y, returned[0], returned[1])
         graphics.clear_arr()
-        # variable_j = graphics.slide_right(j, t)
-        # if t < a[j]:
-        #     print()
-        #     # arr_elem[j+1].x, arr_elem[j+1].y = init[0], init[1]
+
         while j >= 0 and a[j] > t:
             a[j + 1] = a[j]
-            # graphics.slide_right(arr_elem[j].x, arr_elem[j+1].x)
-            # arr_elem[j+1] = arr_elem[j]
-
-            graphics.initiate_event_loop()
             j -= 1
         a[j + 1] = t
 
-        # if t < a[i]:
-        #     print()
-        #     # arr_elem[j+1].x, arr_elem[j+1].y = init[0], init[1]
-        #     graphics.slide_in(t, arr_elem[i].x, arr_elem[i].y, init[0], init[1])
-        #     graphics.initiate_event_loop()
-        graphics.initiate_event_loop()
+        # graphics.initiate_event_loop()

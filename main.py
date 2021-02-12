@@ -35,6 +35,7 @@ while running:
     graphics.screen.fill(graphics.WHITE)
     # graphics.clear_arr()
     game_model.generate_unsorted_array()
+    graphics.clear_arr(CLEAR_COLOR=True)
     pygame.display.update()
     graphics.clock.tick(game_model.FPS)
 
