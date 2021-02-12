@@ -1,7 +1,6 @@
 import sys
 
 import pygame
-import random
 from pygame.locals import *
 
 
@@ -55,6 +54,7 @@ class View:
 
             pygame.display.update()
 
+
             event = pygame.event.wait()
             if event.type == QUIT:
                 pygame.quit()
@@ -85,7 +85,6 @@ class View:
         for i in range(len(a)):
             if arr_elem[i] in  ignore_list: continue
 
-            border = arr_elem[i].border
             border_color = arr_elem[i].border_color
 
             text = self.font.render(str(a[i]), 1, self.BLACK)
@@ -97,7 +96,6 @@ class View:
             self.screen.blit(text, text_rec)
         pygame.display.update()
 
-        # self.clear_arr()
 
     def clear_arr(self, CLEAR_COLOR = False):
         arr_elem = self.arr_elem
@@ -144,26 +142,10 @@ class View:
 
                     self.screen.blit(text1, text_rect1)
                     self.screen.blit(text2, text_rect2)
+                    pygame.display.update()
 
-                    # pygame.display.update()
-                    # self.show_array()
                 elem1.border_color = elem2.border_color = self.WHITE
-            # else:
-            #     border = arr_elem[i].border
-            #     border_color = arr_elem[i].border_color
-            #
-            #     text = self.font.render(str(a[i]), 1, self.BLACK)
-            #     box = pygame.rect.Rect((arr_elem[i].x, arr_elem[i].y, 50, 50))
-            #     pygame.draw.rect(self.screen, self.BLACK, box, 1)
-            #
-            #     text_rec = text.get_rect(center=box.center)
-            #
-            #     self.screen.blit(text, text_rec)
-            #     pygame.display.update()
-            #     self.screen.fill(self.WHITE)
 
-        # self.clear_arr()
-        pygame.display.update()
 
     def slide_up(self, source_index):
 
@@ -229,25 +211,6 @@ class View:
             dest = prev_x
         return prev_x, prev_y
 
-        # for i in range(len(a)):
-        #     if arr_elem[i].x == source_x:
-        #         elem = arr_elem[i]
-        #
-        #         text = self.font.render(str(a[i]), 1, self.BLACK)
-        #
-        #         while elem.x < dest_x:
-        #             self.screen.fill(self.WHITE)
-        #             self.show_array()
-        #
-        #             elem.x += right
-        #
-        #             box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
-        #             pygame.draw.rect(self.screen, elem.border_color, box, 1)
-        #
-        #             text_rec = text.get_rect(center=box.center)
-        #
-        #             self.screen.blit(text, text_rec)
-
 
     def slide_in(self, temp_val, source_x, source_y, dest_x, dest_y):
         arr_elem = self.arr_elem
@@ -296,17 +259,82 @@ class View:
                 self.initiate_event_loop()
             elem.border_color = self.WHITE
 
+    def alt_slide_two_elem(self, elem1, elem2, text1, tex2):
+
+        left = -0.1
+        right = 0.1
+
+        init_elem1_x = elem1.x
+        init_elem2_x = elem2.x
+
+        a = self.model.a
+        center = (100, self.height / 2)
+        arr_elem = self.arr_elem
+
+        elem1.border_color = elem2.border_color = self.RED
+
+        text1 = self.font.render(str(text1), 1, self.BLACK)
+        text2 = self.font.render(str(tex2), 1, self.BLACK)
+
+        while elem1.x < init_elem2_x and elem2.x > init_elem1_x:
+            self.screen.fill(self.WHITE)
+            self.show_array()
+
+            elem1.x += right
+            elem2.x += left
+
+            box1 = pygame.rect.Rect((elem1.x, elem1.y, 50, 50))
+            text_rect1 = text1.get_rect(center=box1.center)
+            box2 = pygame.rect.Rect((elem2.x, elem2.y, 50, 50))
+            text_rect2 = text2.get_rect(center=box2.center)
+
+
+            pygame.draw.rect(self.screen, elem1.border_color, box1, 1)
+            pygame.draw.rect(self.screen, elem2.border_color, box2, 1)
+
+            self.screen.blit(text1, text_rect1)
+            self.screen.blit(text2, text_rect2)
+
+        elem1.border_color = elem2.border_color = self.WHITE
+        pygame.display.update()
+
+    def slide_down(self, source_index):
+        arr_elem = self.arr_elem
+        a = self.model.a
+        elem = arr_elem[source_index]
+
+        down = 0.5
+
+        for i in range(len(a)):
+            if i == source_index:
+                elem.border_color = self.RED
+
+                text = self.font.render(str(a[i]), 1, self.BLACK)
+
+                limit_up = elem.y + 100
+                while elem.y < limit_up:
+                    self.screen.fill(self.WHITE)
+                    self.show_array()
+
+                    elem.y += down
+
+                    box = pygame.rect.Rect((elem.x, elem.y, 50, 50))
+                    pygame.draw.rect(self.screen, elem.border_color, box, 1)
+
+                    text_rec = text.get_rect(center=box.center)
+
+                    self.screen.blit(text, text_rec)
+
+                    # pygame.display.update()
+
+                elem.border_color = self.WHITE
+
 
 class Element:
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-        self.border = 5
-
-        # self.surf = pygame.Surface((70, 70), pygame.SRCALPHA)
-        #
-        # self.surf.fill((255, 255, 255))
         self.border_color = ((255, 255, 255))
 
     def __repr__(self):

@@ -1,6 +1,3 @@
-import pygame
-from pygame.locals import *
-
 def bubble_sort(graphics, model):
     a = model.a
     n = len(a)
@@ -13,9 +10,12 @@ def bubble_sort(graphics, model):
                 graphics.initiate_event_loop()
 
             graphics.clear_arr()
+            graphics.screen.fill(graphics.WHITE)
         arr_elem[i].border_color = graphics.BLACK
+        graphics.show_array()
+        graphics.initiate_event_loop()
+
     graphics.show_array()
-    graphics.initiate_event_loop()
 
 def selection_sort(graphics, model):
     a = model.a
@@ -38,8 +38,20 @@ def selection_sort(graphics, model):
             arr_elem[j].border_color, arr_elem[min_index].border_color = prev_color_j, prev_color_min
             graphics.initiate_event_loop()
 
+        if i != min_index:
+            graphics.slide_up(i)
+            graphics.slide_up(min_index)
+
+            graphics.alt_slide_two_elem(arr_elem[i], arr_elem[min_index], a[i], a[min_index])
+
+            graphics.slide_down(i)
+            graphics.slide_down(min_index)
+
         a[i], a[min_index] = a[min_index], a[i]
         arr_elem[i].border_color = graphics.GREEN
+
+        graphics.clear_arr()
+
         graphics.show_array()
         graphics.screen.fill(graphics.WHITE)
         graphics.initiate_event_loop()
@@ -53,7 +65,6 @@ def insertion_sort(graphics, model):
     n = len(a)
 
     for i in range(n):
-        graphics.initiate_event_loop()
         t = a[i]
         j = i - 1
 
@@ -70,5 +81,3 @@ def insertion_sort(graphics, model):
             a[j + 1] = a[j]
             j -= 1
         a[j + 1] = t
-
-        # graphics.initiate_event_loop()

@@ -1,7 +1,7 @@
 import random
 
 
-class Game:
+class Data:
     def __init__(self):
         # self.a = [random.randint(1,8) for i in range(8)]
         self.a = [6, 5, 3, 1, 8, 7, 2, 4] # selection
@@ -10,4 +10,5 @@ class Game:
         self.FPS = 60
 
     def generate_unsorted_array(self):
+        # self.a = [random.randint(1, 8) for i in range(8)]
         self.a = [6, 5, 3, 1, 8, 7, 2, 4]

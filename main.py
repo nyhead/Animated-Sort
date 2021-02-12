@@ -5,11 +5,12 @@ from pygame.locals import *
 
 running = True
 
-game_model = model.Game()
-graphics = view.View(game_model)
+data_model = model.Data()
+graphics = view.View(data_model)
 
 graphics.initialize()
 choice = ''
+
 while running:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -19,24 +20,24 @@ while running:
     choice = graphics.intro()
     graphics.screen.fill(graphics.WHITE)
 
-
-    # if choice != None:
     print(choice)
     graphics.show_array()
     pygame.time.wait(1000)
     if choice == "BUBBLE":
-        bubble_sort(graphics, game_model)
+        bubble_sort(graphics, data_model)
     elif choice == "SELECTION":
-        selection_sort(graphics, game_model)
+        selection_sort(graphics, data_model)
     elif choice == "INSERTION":
-        insertion_sort(graphics, game_model)
+        insertion_sort(graphics, data_model)
 
-    # choice = ''
+    data_model.generate_unsorted_array()
+
     graphics.screen.fill(graphics.WHITE)
-    # graphics.clear_arr()
-    game_model.generate_unsorted_array()
     graphics.clear_arr(CLEAR_COLOR=True)
+
     pygame.display.update()
-    graphics.clock.tick(game_model.FPS)
+    graphics.clock.tick(data_model.FPS)
+
+    choice = ''
 
 pygame.quit()
